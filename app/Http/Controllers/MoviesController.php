@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Movie;
 use Illuminate\Http\Request;
 
-class MovieController extends Controller
+class MoviesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +14,8 @@ class MovieController extends Controller
      */
     public function index()
     {
-        //
+        $movies = Movie::all();
+        return $movies;
     }
 
     /**
@@ -25,7 +26,16 @@ class MovieController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request;
+        $movie = Movie::create([
+            "title" => $data['title'],
+            "director" => $data['director'],
+            "imageUrl" => $data['imageUrl'],
+            "duration" => $data['duration'],
+            "releaseDate" => $data['releaseDate'],
+            "genre" => $data['genre'],
+        ]);
+        return $movie;
     }
 
     /**
@@ -34,9 +44,10 @@ class MovieController extends Controller
      * @param  \App\Models\Movie  $movie
      * @return \Illuminate\Http\Response
      */
-    public function show(Movie $movie)
+    public function show($id)
     {
-        //
+        $movie = Movie::findOrFail($id);
+        return $movie;
     }
 
     /**
@@ -46,9 +57,11 @@ class MovieController extends Controller
      * @param  \App\Models\Movie  $movie
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Movie $movie)
+    public function update(Request $request, $id)
     {
-        //
+        $movie = Movie::findOrFail($id);
+        $movie->update($request);
+        return $movie;
     }
 
     /**
@@ -57,8 +70,10 @@ class MovieController extends Controller
      * @param  \App\Models\Movie  $movie
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Movie $movie)
+    public function destroy($id)
     {
-        //
+        $movie = Movie::findOrFail($id);
+        $movie->delete();
+        return $movie;
     }
 }
