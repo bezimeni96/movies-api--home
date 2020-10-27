@@ -10,8 +10,4 @@ class Movie extends Model
     use HasFactory;
 
     protected $fillable = ['title', 'director', 'imageUrl', 'duration', 'releaseDate', 'genre'];
-
-    public function search($title) {
-        return Movie::where('title', 'like', '%' . $title . '%')->get();
-    }
 }

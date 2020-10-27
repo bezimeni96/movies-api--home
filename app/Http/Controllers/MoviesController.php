@@ -17,13 +17,21 @@ class MoviesController extends Controller
      */
     public function index(Request $request)
     {
+        $moviesQuery = Movie::query();
+
         $title = $request->get('title', '');
         if ($title) {
-            $movie = new Movie;
-            return $movie->search($title);
+            $moviesQuery->where('title', 'like', '%' . $title . '%');
         }
 
-        $movies = Movie::all();
+        $take = $request->get('take', null);
+        $skip = $request->get('skip', 0);
+        if ($take) {
+            $moviesQuery->skip($skip)->take($take);
+        }
+
+
+        $movies = $moviesQuery->get();
         return $movies;
     }
 
