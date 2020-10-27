@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateMovieRequest;
+use App\Http\Requests\UpdateMovieRequest;
 use App\Models\Movie;
 use Illuminate\Http\Request;
+
 
 class MoviesController extends Controller
 {
@@ -24,9 +27,9 @@ class MoviesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateMovieRequest $request)
     {
-        $data = $request;
+        $data = $request->validated();
         $movie = Movie::create([
             "title" => $data['title'],
             "director" => $data['director'],
@@ -57,10 +60,10 @@ class MoviesController extends Controller
      * @param  \App\Models\Movie  $movie
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateMovieRequest $request, $id)
     {
         $movie = Movie::findOrFail($id);
-        $movie->update($request);
+        $movie->update($request->validated());
         return $movie;
     }
 
