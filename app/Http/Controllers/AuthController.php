@@ -16,6 +16,17 @@ class AuthController extends Controller
         if (!$token) {
             abort(401, 'Invalid credentials');
         }
+
         return ['token' => $token];
+    }
+
+    public function refreshToken() {
+        return [
+            'token' => auth('api')->refresh(true)
+        ];
+    }
+
+    public function logout() {
+        return auth('api')->logout(true);
     }
 }
