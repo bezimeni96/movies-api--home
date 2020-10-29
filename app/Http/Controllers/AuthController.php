@@ -8,6 +8,9 @@ use App\Http\Requests\RegisterRequest;
 use App\Models\User;
 use Illuminate\Support\Str;
 
+
+use Tymon\JWTAuth\Facades\JWTAuth;
+
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
@@ -23,7 +26,12 @@ class AuthController extends Controller
             abort(401, 'Invalid credentials');
         }
 
-        return ['token' => $token];
+        $user = JWTAuth::user();
+
+        return [
+            'user' => $user,
+            'token' => $token
+        ];
     }
 
     public function refreshToken() {
